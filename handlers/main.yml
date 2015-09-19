@@ -1,0 +1,7 @@
+# roles/jblicense/handlers/main.yml
+---
+
+- name: restart jblicense
+  service:
+    name: jblicensed
+    state: restarted

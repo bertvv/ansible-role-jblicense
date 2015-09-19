@@ -1,0 +1,7 @@
+# roles/jblicense/vars/main.yml
+---
+
+jblicense_packages:
+  - jblicense
+
+jblicense_service: jblicensed
