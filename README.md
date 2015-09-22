@@ -13,7 +13,6 @@ You need to download a Java JRE installer first and place it in the `files/` fol
 
 ## Role Variables
 
-
 | Variable                  | Default                          | Comments (type)                                                              |
 | :---                      | :---                             | :---                                                                         |
 | `jblicense_host_name`     | jblicense.localdomain            | The host name of the license server. It should resolve to an IP address.     |
@@ -22,7 +21,7 @@ You need to download a Java JRE installer first and place it in the `files/` fol
 | `jblicense_listen_port`   | 1111                             | The port number on which to listen.                                          |
 | `jblicense_local_subnets` | []                               | A list of subnets (in CIDR notation) that are considered "local". See below. |
 
-When `jblicense_local_subnets` is set, only hosts from these subnets are allowed to request a license from the server. If not, *all* hosts are allowed.
+When `jblicense_local_subnets` is set, only hosts from these subnets are allowed to request a license from the server. If not, *all* hosts are allowed. In the latter case, make sure your license server is not accessible over the public Internet!
 
 ## Dependencies
 
@@ -34,7 +33,7 @@ See the [test playbook](tests/test.yml)
 
 ## Testing
 
-The `tests` directory contains tests for this role in the form of a Vagrant environment. After running `vagrant up`, you should be able to access the license server from your web browser at "http://192.168.56.11:1111". It will show the registration page.
+The `tests/` directory contains tests for this role in the form of a Vagrant environment. After running `vagrant up`, you should be able to access the license server from your web browser at "http://192.168.56.11:1111". It will show the registration page.
 
 The directory `tests/roles/jblicense` is a symbolic link that should point to the root of this project in order to work. To create it, do
 
