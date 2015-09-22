@@ -3,5 +3,10 @@
 
 - name: restart jblicense
   service:
-    name: jblicensed
+    name: jblicense
+    state: restarted
+
+- name: restart firewall
+  service:
+    name: firewalld
     state: restarted

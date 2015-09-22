@@ -11,3 +11,6 @@
 
 # Ignore role dependencies (installed from Ansible Galaxy)
 tests/roles/*.*
+
+# Ignore Java packages
+server-jre-*-linux-x64.tar.gz

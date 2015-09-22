@@ -1,0 +1,13 @@
+# Systemd unit file for JetBrains License Server
+
+[Unit]
+Description=JetBrains License Server
+After=network.target
+
+[Service]
+Type=forking
+ExecStart={{ jblicense_server_home }}/bin/license-server.sh start
+ExecStop={{ jblicense_server_home }}/bin/license-server.sh stop
+ExecReload={{ jblicense_server_home }}/bin/license-server.sh restart
+
+

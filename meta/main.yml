@@ -1,8 +1,8 @@
 ---
 galaxy_info:
   author: Bert Van Vreckem
-  description: PURPOSE
-  company:
+  description: Installs JetBrains License server on a CentOS/Apache web server
+  company: University College Ghent
   license: BSD
   min_ansible_version: 1.7
   platforms:
@@ -10,6 +10,6 @@ galaxy_info:
     versions:
       - 7
   categories:
-    - system
+    - web
 dependencies: []
 version: 1.0.0

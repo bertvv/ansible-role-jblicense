@@ -1,5 +1,17 @@
 ---
 - hosts: all
   sudo: true
+  pre_tasks:
+    - name: Enable firewall
+      service:
+        name: firewalld
+        state: running
+    - name: Fix name resolution
+      lineinfile:
+        dest: /etc/hosts
+        line: "192.168.56.11  jblicense.localdomain"
+  vars:
+    jblicense_local_subnets:
+      - '192.168.56.0/24'
   roles:
     - jblicense

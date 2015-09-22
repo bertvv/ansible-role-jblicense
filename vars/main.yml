@@ -2,6 +2,10 @@
 ---
 
 jblicense_packages:
-  - jblicense
+  - unzip
 
-jblicense_service: jblicensed
+jblicense_package_location: /tmp/
+
+jblicense_jre_install_dir: /usr/java/
+
+jblicense_server_home: /srv/jb-license-server

@@ -1,16 +1,113 @@
 # roles/jblicense/tasks/main.yml
 ---
 
-- name: Install packages
+- name: Install package dependencies
   yum:
-    pkg: "{{ item }}"
-    state: installed
+    name: "{{ item }}"
+    state: present
   with_items: jblicense_packages
   tags: jblicense
 
-- name: Ensure service is started
+- name: Ensure install directory exists
+  file:
+    path: "{{ jblicense_jre_install_dir }}"
+    state: directory
+  register: create_java_home
+  tags: jblicense
+
+- name: Install packages
+  unarchive:
+    src: "{{ jblicense_jre_package }}"
+    dest: "{{ jblicense_jre_install_dir }}"
+    owner: root
+    group: root
+  when: create_java_home.changed
+  tags: jblicense
+
+- name: Install binaries
+  alternatives:
+    name: "{{ item }}"
+    link: "/usr/bin/{{ item }}"
+    path: "{{ jblicense_jre_install_dir }}/jdk{{ jblicense_jre_version }}/bin/{{ item }}"
+  with_items:
+    - java
+    - jar
+  tags: jblicense
+
+- name: Ensure license server directory exists
+  file:
+    name: "{{ jblicense_server_home }}"
+    state: directory
+    owner: root
+    group: root
+    setype: httpd_sys_content_t
+  register: create_dir
+  tags: jblicense
+
+- name: Download JetBrains License Server installer
+  get_url:
+    url: "http://download.jetbrains.com/lcsrv/license-server-installer.zip"
+    dest: "{{ jblicense_package_location }}"
+  when: create_dir.changed
+  tags: jblicense
+
+- name: Unpack JetBrains License Server code
+  unarchive:
+    src: "{{ jblicense_package_location }}/license-server-installer.zip"
+    dest: "{{ jblicense_server_home }}"
+    copy: no
+    owner: root
+    group: root
+    setype: httpd_sys_content_t
+  when: create_dir.changed
+  tags: jblicense
+
+- name: Remove installer
+  file:
+    path: "{{ jblicense_package_location }}/license-server-installer.zip"
+    state: absent
+  when: create_dir.changed
+  tags: jblicense
+
+- name: Configure JetBrains License Server
+  template:
+    src: service-config.properties.j2
+    dest: "{{ jblicense_server_home }}/conf/service-config.properties"
+    owner: root
+    group: root
+    setype: httpd_sys_content_t
+    mode: '0644'
+  notify: restart jblicense
+  tags: jblicense
+
+- name: Create Systemd service file
+  template:
+    src: jblicense.service.j2
+    dest: /usr/lib/systemd/system/jblicense.service
+  tags: jblicense
+
+- name: Limit access to the License Server to hosts on ‘local’ subnets only
+  firewalld:
+    rich_rule: 'rule family="ipv4" port port="{{ jblicense_listen_port }}" protocol="tcp" source address="{{ item }}" accept'
+    permanent: true
+    state: enabled
+  with_items: jblicense_local_subnets
+  when: jblicense_local_subnets
+  notify: restart firewall
+  tags: jblicense
+
+- name: Allow access to the License Server to all hosts
+  firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: enabled
+  when: not jblicense_local_subnets
+  notify: restart firewall
+  tags: jblicense
+
+- name: Ensure the JetBrains License Server is running
   service:
-    name: "{{ jblicense_service }}"
-    state: started
+    name: jblicense
+    state: running
     enabled: true
   tags: jblicense
