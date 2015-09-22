@@ -13,13 +13,13 @@ You need to download a [Java JRE/JDK installer](http://www.oracle.com/technetwor
 
 ## Role Variables
 
-| Variable                  | Default                          | Comments (type)                                                              |
-| :---                      | :---                             | :---                                                                         |
-| `jblicense_host_name`     | jblicense.localdomain            | The host name of the license server. It should resolve to an IP address.     |
-| `jblicense_jre_package`   | server-jre-8u60-linux-x64.tar.gz | The name of the Java JRE installation package.                               |
-| `jblicense_jre_version`   | 1.8.0_60                         | The version of the Java JRE                                                  |
-| `jblicense_listen_port`   | 1111                             | The port number on which to listen.                                          |
-| `jblicense_local_subnets` | []                               | A list of subnets (in CIDR notation) that are considered "local". See below. |
+| Variable                  | Default                          | Comments (type)                                                                  |
+| :---                      | :---                             | :---                                                                             |
+| `jblicense_host_name`     | jblicense.localdomain            | The host name of the license server. It should resolve to the host's IP address. |
+| `jblicense_jre_package`   | server-jre-8u60-linux-x64.tar.gz | The name of the Java JRE installation package.                                   |
+| `jblicense_jre_version`   | 1.8.0_60                         | The version of the Java JRE                                                      |
+| `jblicense_listen_port`   | 1111                             | The port number on which to listen.                                              |
+| `jblicense_local_subnets` | []                               | A list of subnets (in CIDR notation) that are considered "local". See below.     |
 
 When `jblicense_local_subnets` is set, only hosts from these subnets are allowed to request a license from the server. If not, *all* hosts are allowed. In the latter case, make sure your license server is not accessible over the public Internet!
 
