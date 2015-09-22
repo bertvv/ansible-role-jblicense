@@ -9,7 +9,7 @@ An Ansible role for setting up a [JetBrains License Server](https://www.jetbrain
 
 ## Requirements
 
-You need to download a Java JRE installer first and place it in the `files/` folder. Adapt the variables `jblicense_jre*` according to the version you're installing (see Role Variables below).
+You need to download a [Java JRE/JDK installer](http://www.oracle.com/technetwork/java/javase/downloads/index.html) first and place it in the `files/` folder. Adapt the variables `jblicense_jre*` according to the version you're installing (see Role Variables below).
 
 ## Role Variables
 
