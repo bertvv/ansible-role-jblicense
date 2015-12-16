@@ -96,15 +96,6 @@
   notify: restart firewall
   tags: jblicense
 
-- name: Allow access to the License Server to all hosts
-  firewalld:
-    port: 8080/tcp
-    permanent: true
-    state: enabled
-  when: not jblicense_local_subnets
-  notify: restart firewall
-  tags: jblicense
-
 - name: Ensure the JetBrains License Server is running
   service:
     name: jblicense
