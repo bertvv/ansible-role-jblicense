@@ -5,13 +5,14 @@
   yum:
     name: "{{ item }}"
     state: present
-  with_items: jblicense_packages
+  with_items: "{{ jblicense_packages }}"
   tags: jblicense
 
 - name: Ensure install directory exists
   file:
     path: "{{ jblicense_jre_install_dir }}"
     state: directory
+  always_run: yes
   register: create_java_home
   tags: jblicense
 
@@ -41,6 +42,7 @@
     owner: root
     group: root
     setype: httpd_sys_content_t
+  always_run: yes
   register: create_dir
   tags: jblicense
 
@@ -91,7 +93,7 @@
     rich_rule: 'rule family="ipv4" port port="{{ jblicense_listen_port }}" protocol="tcp" source address="{{ item }}" accept'
     permanent: true
     state: enabled
-  with_items: jblicense_local_subnets
+  with_items: "{{ jblicense_local_subnets }}"
   when: jblicense_local_subnets
   notify: restart firewall
   tags: jblicense
