@@ -9,4 +9,4 @@
 - name: restart firewall
   service:
     name: firewalld
-    state: restarted
+    state: reloaded

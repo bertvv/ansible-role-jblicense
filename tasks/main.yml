@@ -2,17 +2,16 @@
 ---
 
 - name: Install package dependencies
-  yum:
-    name: "{{ item }}"
+  package:
+    name: "{{ jblicense_packages }}"
     state: present
-  with_items: "{{ jblicense_packages }}"
   tags: jblicense
 
 - name: Ensure install directory exists
   file:
     path: "{{ jblicense_jre_install_dir }}"
     state: directory
-  always_run: yes
+  # check_mode: true
   register: create_java_home
   tags: jblicense
 
@@ -42,7 +41,7 @@
     owner: root
     group: root
     setype: httpd_sys_content_t
-  always_run: yes
+  # check_mode: true
   register: create_dir
   tags: jblicense
 
@@ -57,7 +56,7 @@
   unarchive:
     src: "{{ jblicense_package_location }}/license-server-installer.zip"
     dest: "{{ jblicense_server_home }}"
-    copy: no
+    copy: false
     owner: root
     group: root
     setype: httpd_sys_content_t
@@ -101,6 +100,6 @@
 - name: Ensure the JetBrains License Server is running
   service:
     name: jblicense
-    state: running
+    state: started
     enabled: true
   tags: jblicense

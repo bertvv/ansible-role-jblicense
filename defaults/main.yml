@@ -7,7 +7,6 @@ jblicense_listen_port: 1111
 
 jblicense_local_subnets: []
 
-jblicense_jre_package: server-jre-8u60-linux-x64.tar.gz
+jblicense_jre_package: server-jre-8u192-linux-x64.tar.gz
 
-jblicense_jre_version: 1.8.0_60
-
+jblicense_jre_version: 1.8.0_192
